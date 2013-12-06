@@ -87,6 +87,24 @@ Handle<Value> getState(const Arguments& args) {
         ft->Set(String::New("f_z"),Number::New(H_state.ft[i].f_z));
     }
 
+    // Create IMU array
+    Handle<Array> imus = Array::New();
+    state->Set(String::New("imu"),imus);
+
+    // Set IMU array props
+    for (int i = 0; i < HUBO_IMU_COUNT; i++) {        
+        // Create IMU
+        Handle<Object> imu = Object::New();
+        imus->Set(Number::New(i),imu);
+        // Set IMU props
+        imu->Set(String::New("a_x"),Number::New(H_state.imu[i].a_x));
+        imu->Set(String::New("a_y"),Number::New(H_state.imu[i].a_y));
+        imu->Set(String::New("a_z"),Number::New(H_state.imu[i].a_z));
+        imu->Set(String::New("w_x"),Number::New(H_state.imu[i].w_x));
+        imu->Set(String::New("w_y"),Number::New(H_state.imu[i].w_y));
+        imu->Set(String::New("w_z"),Number::New(H_state.imu[i].w_z));
+    }
+
     // Create joint array
     Handle<Array> joints = Array::New();
     state->Set(String::New("joint"),joints);
