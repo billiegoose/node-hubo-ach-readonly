@@ -14,3 +14,9 @@ To test, run
 npm install performance-now
 node run.js
 ```
+
+Release Notes:
+--------------
+0.1.2 - Added joint status (error flags) support
+0.1.1 - Added IMU support
+0.1.0 - Initial release

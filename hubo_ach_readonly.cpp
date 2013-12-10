@@ -126,6 +126,36 @@ Handle<Value> getState(const Arguments& args) {
         joint->Set(String::New("active"),Integer::New((int)H_state.joint[i].active)); //uint8_t
         joint->Set(String::New("zeroed"),Integer::New((int)H_state.joint[i].zeroed)); //uint8_t
     }
+
+    // Create joint status array
+    Handle<Array> statuses = Array::New();
+    state->Set(String::New("status"),statuses);
+
+    // Set joint status array props
+    for (int i = 0; i < HUBO_JOINT_COUNT; i++) {
+        // Create joint status
+        Handle<Object> status = Object::New();
+        statuses->Set(Number::New(i),status);
+        // Set joint status props
+        status->Set(String::New("driverOn"),    Integer::New((int)H_state.status[i].driverOn)); //uint8_t
+        status->Set(String::New("ctrlOn"),      Integer::New((int)H_state.status[i].ctrlOn)); //uint8_t
+        status->Set(String::New("mode"),        Integer::New((int)H_state.status[i].mode)); //uint8_t
+        status->Set(String::New("limitSwitch"), Integer::New((int)H_state.status[i].limitSwitch)); //uint8_t
+        status->Set(String::New("homeFlag"),    Integer::New((int)H_state.status[i].homeFlag)); //uint8_t
+        status->Set(String::New("jam"),         Integer::New((int)H_state.status[i].jam)); //uint8_t
+        status->Set(String::New("pwmSaturated"),Integer::New((int)H_state.status[i].pwmSaturated)); //uint8_t
+        status->Set(String::New("bigError"),    Integer::New((int)H_state.status[i].bigError)); //uint8_t
+        status->Set(String::New("encError"),    Integer::New((int)H_state.status[i].encError)); //uint8_t
+        status->Set(String::New("driverFault"), Integer::New((int)H_state.status[i].driverFault)); //uint8_t
+        status->Set(String::New("motorFail0"),  Integer::New((int)H_state.status[i].motorFail0)); //uint8_t
+        status->Set(String::New("motorFail1"),  Integer::New((int)H_state.status[i].motorFail1)); //uint8_t
+        status->Set(String::New("posMinError"), Integer::New((int)H_state.status[i].posMinError)); //uint8_t
+        status->Set(String::New("posMaxError"), Integer::New((int)H_state.status[i].posMaxError)); //uint8_t
+        status->Set(String::New("velError"),    Integer::New((int)H_state.status[i].velError)); //uint8_t
+        status->Set(String::New("accError"),    Integer::New((int)H_state.status[i].accError)); //uint8_t
+        status->Set(String::New("tempError"),   Integer::New((int)H_state.status[i].tempError)); //uint8_t
+    }
+
     return scope.Close(state);
 }
 
