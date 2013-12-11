@@ -156,6 +156,16 @@ Handle<Value> getState(const Arguments& args) {
         status->Set(String::New("tempError"),   Integer::New((int)H_state.status[i].tempError)); //uint8_t
     }
 
+    // Create power object
+    Handle<Object> power = Object::New();
+    state->Set(String::New("power"),power);
+    power->Set(String::New("voltage"),Number::New(H_state.power.voltage)); //double
+    power->Set(String::New("current"),Number::New(H_state.power.current)); //double
+    power->Set(String::New("power"),Number::New(H_state.power.power)); //double
+
+    // Create time
+    state->Set(String::New("time"),Number::New(H_state.time));
+
     return scope.Close(state);
 }
 
