@@ -159,6 +159,15 @@ Handle<Value> getState(const Arguments& args) {
     return scope.Close(state);
 }
 
+Handle<Array> registerJointName(const char* name, int id, Handle<Array> jointMap, Handle<Array> jointList) {
+    Handle<String> Name = String::NewSymbol(name);
+    Handle<Integer> Id = Integer::New(id);
+    jointMap->Set(Name,Id);
+    jointMap->Set(Id,Name);
+    int len = jointList->Length();
+    jointList->Set(Integer::New(len),Name);
+}
+
 void RegisterModule(Handle<Object> target) {
 
     target->Set(String::NewSymbol("init"),
@@ -166,7 +175,59 @@ void RegisterModule(Handle<Object> target) {
     target->Set(String::NewSymbol("getState"),
         FunctionTemplate::New(getState)->GetFunction());
 
+    // JointMap is a doubly-linked map of joint names to index values.
+    // E.g. JointMap["WST"] = 0; JointMap[0] = "WST";
+    // JointList is simply a list of all the joints.
+    // E.g. JointList = ["WST", "NKY", "NK1", ... ]
+    Handle<Array> jointMap = Array::New();
+    Handle<Array> jointList = Array::New();
+    registerJointName("WST",0,jointMap,jointList);  //  Trunk Yaw
+    registerJointName("NKY",1,jointMap,jointList);  //  Neck Yaw
+    registerJointName("NK1",2,jointMap,jointList);  //  Neck 1
+    registerJointName("NK2",3,jointMap,jointList);  //  Neck 2
+    registerJointName("LSP",4,jointMap,jointList);  //  Left Shoulder Pitch
+    registerJointName("LSR",5,jointMap,jointList);  //  Left Shoulder Yaw
+    registerJointName("LSY",6,jointMap,jointList);  //  Left Shoulder Roll
+    registerJointName("LEB",7,jointMap,jointList);  //  Left Elbow Pitch
+    registerJointName("LWY",8,jointMap,jointList);  //  Left Wrist Yaw
+    registerJointName("LWR",9,jointMap,jointList);  //  Left Wrist Roll
+    registerJointName("LWP",10,jointMap,jointList); //  Left Wrist Pitch
+    registerJointName("RSP",11,jointMap,jointList); //  Right Shoulder Pitch
+    registerJointName("RSR",12,jointMap,jointList); //  Right Shoulder Roll
+    registerJointName("RSY",13,jointMap,jointList); //  Right Shoulder Yaw
+    registerJointName("REB",14,jointMap,jointList); //  Right Elbow Pitch
+    registerJointName("RWY",15,jointMap,jointList); //  Right Wrist Yaw
+    registerJointName("RWR",16,jointMap,jointList); //  Right Wrist Roll
+    registerJointName("RWP",17,jointMap,jointList); //  Right Wrist Pitch
+    // Mind the gap
+    registerJointName("LHY",19,jointMap,jointList); //  Left Hip Yaw
+    registerJointName("LHR",20,jointMap,jointList); //  Left Hip Roll
+    registerJointName("LHP",21,jointMap,jointList); //  Left Hip Pitch
+    registerJointName("LKN",22,jointMap,jointList); //  Left Knee Pitch
+    registerJointName("LAP",23,jointMap,jointList); //  Left Ankle Pitch
+    registerJointName("LAR",24,jointMap,jointList); //  Left Ankle Roll
+    // Mind the gap
+    registerJointName("RHY",26,jointMap,jointList); //  Right Hip Yaw
+    registerJointName("RHR",27,jointMap,jointList); //  Right Hip Roll
+    registerJointName("RHP",28,jointMap,jointList); //  Right Hip Pitch
+    registerJointName("RKN",29,jointMap,jointList); //  Right Knee Pitch
+    registerJointName("RAP",30,jointMap,jointList); //  Right Ankle Pitch
+    registerJointName("RAR",31,jointMap,jointList); //  Right Ankle Roll
+    registerJointName("RF1",32,jointMap,jointList); //  Right Finger
+    registerJointName("RF2",33,jointMap,jointList); //  Right Finger
+    registerJointName("RF3",34,jointMap,jointList); //  Right Finger
+    registerJointName("RF4",35,jointMap,jointList); //  Right Finger
+    registerJointName("RF5",36,jointMap,jointList); //  Right Finger
+    registerJointName("LF1",37,jointMap,jointList); //  Left Finger
+    registerJointName("LF2",38,jointMap,jointList); //  Left Finger
+    registerJointName("LF3",39,jointMap,jointList); //  Left Finger
+    registerJointName("LF4",40,jointMap,jointList); //  Left Finger
+    registerJointName("LF5",41,jointMap,jointList); //  Left Finger
+    target->Set(String::NewSymbol("JointMap"),jointMap);
+    target->Set(String::NewSymbol("JointList"),jointList);
+
     // Declare useful constants
+    // Old API. But I think I'm going to keep the old API around because it is more convenient to type.
     target->Set(String::NewSymbol("WST"),Integer::New(0));  //  Trunk Yaw
     target->Set(String::NewSymbol("NKY"),Integer::New(1));  //  Neck Yaw
     target->Set(String::NewSymbol("NK1"),Integer::New(2));  //  Neck 1
@@ -185,14 +246,14 @@ void RegisterModule(Handle<Object> target) {
     target->Set(String::NewSymbol("RWY"),Integer::New(15)); //  Right Wrist Yaw
     target->Set(String::NewSymbol("RWR"),Integer::New(16)); //  Right Wrist Roll
     target->Set(String::NewSymbol("RWP"),Integer::New(17)); //  Right Wrist Pitch
-
+    // Mind the gap
     target->Set(String::NewSymbol("LHY"),Integer::New(19)); //  Left Hip Yaw
     target->Set(String::NewSymbol("LHR"),Integer::New(20)); //  Left Hip Roll
     target->Set(String::NewSymbol("LHP"),Integer::New(21)); //  Left Hip Pitch
     target->Set(String::NewSymbol("LKN"),Integer::New(22)); //  Left Knee Pitch
     target->Set(String::NewSymbol("LAP"),Integer::New(23)); //  Left Ankle Pitch
     target->Set(String::NewSymbol("LAR"),Integer::New(24)); //  Left Ankle Roll
-
+    // Mind the gap
     target->Set(String::NewSymbol("RHY"),Integer::New(26)); //  Right Hip Yaw
     target->Set(String::NewSymbol("RHR"),Integer::New(27)); //  Right Hip Roll
     target->Set(String::NewSymbol("RHP"),Integer::New(28)); //  Right Hip Pitch
