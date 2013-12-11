@@ -1,6 +1,6 @@
 {
   "name": "hubo-ach-readonly",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "main": "./build/Release/hubo_ach_readonly.node",
   "scripts": {
     "install": "node-gyp rebuild"
