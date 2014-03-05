@@ -17,6 +17,8 @@ node run.js
 
 Release Notes:
 --------------
+0.1.4 - Bugfix release.
+0.1.3 - Added support for power board and time.
 0.1.2 - Added joint status (error flags) support
 0.1.1 - Added IMU support
 0.1.0 - Initial release

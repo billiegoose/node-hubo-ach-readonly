@@ -26,12 +26,18 @@ struct hubo_state H_state;
 // This function opens the ACH channel. Returns 1 if successful, 0 if unsuccessful.
 Handle<Value> Init(const Arguments& args) {
     HandleScope scope; // Ensures that any v8 handles created in this function are properly cleaned up.
+    static bool already_init = false;
+    // If the user calls Init() a second time, we want to re-initialize properly.
+    if (already_init) {
+        ach_close(&chan_hubo_state);
+    }
 
     /* Open Ach Channel */
     int r = ach_open(&chan_hubo_state, HUBO_CHAN_STATE_NAME , NULL);
     if ( ACH_OK != r ) {
         return scope.Close(Integer::New(0));
     };
+    already_init = true;
     //memset( &H_state, 0, sizeof(H_state)); // I don't think we need this. -Will
 
     // When returning a value from a function, make sure to wrap it in
@@ -169,7 +175,7 @@ Handle<Value> getState(const Arguments& args) {
     return scope.Close(state);
 }
 
-Handle<Array> registerJointName(const char* name, int id, Handle<Array> jointMap, Handle<Array> jointList) {
+void registerJointName(const char* name, int id, Handle<Array> jointMap, Handle<Array> jointList) {
     Handle<String> Name = String::NewSymbol(name);
     Handle<Integer> Id = Integer::New(id);
     jointMap->Set(Name,Id);

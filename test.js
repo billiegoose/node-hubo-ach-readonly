@@ -1,5 +1,6 @@
 var now = require('performance-now');
 var hubo_ach = require('./build/Release/hubo_ach_readonly');
+console.log("init() Test");
 var r = hubo_ach.init();
 console.warn(r);
 if (r) {
@@ -42,3 +43,6 @@ if (r) {
 		}
 	}
 }
+console.log('subsequent init() Test')
+r = hubo_ach.init();
+console.warn(r);
