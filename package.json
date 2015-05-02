@@ -19,7 +19,7 @@
     "hubo-ach"
   ],
   "author": "William Hilton",
-  "license": "http://opensource.org/licenses/MIT",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/wmhilton/node-hubo-ach-readonly/issues"
   }
